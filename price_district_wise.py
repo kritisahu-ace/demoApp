@@ -26,32 +26,33 @@ def forecast_sarima(series, order=(1, 1, 1), seasonal_order=(1, 1, 1, 12)):
         return 0  # Return 0 if model fitting fails
 
 def price_district_analysis():
-    df = load_data()
+    # df = load_data()
     
-    # Define price ranges
-    bins = [0, 200000, 500000, 1000000, float('inf')]
-    labels = ['0-2L', '2L-5L', '5L-10L', '10L+']
-    df['Price Range'] = pd.cut(df['Sales Price'], bins=bins, labels=labels)
+    # # Define price ranges
+    # bins = [0, 200000, 500000, 1000000, float('inf')]
+    # labels = ['0-2L', '2L-5L', '5L-10L', '10L+']
+    # df['Price Range'] = pd.cut(df['Sales Price'], bins=bins, labels=labels)
     
-    # Aggregate sales data by Price Range, District, and Sales Date (quarterly)
-    df_agg = df.groupby(['Price Range', 'District', pd.Grouper(key='Sales Date', freq='Q')]).size().reset_index(name='Sales')
+    # # Aggregate sales data by Price Range, District, and Sales Date (quarterly)
+    # df_agg = df.groupby(['Price Range', 'District', pd.Grouper(key='Sales Date', freq='Q')]).size().reset_index(name='Sales')
     
-    # Filter major districts (e.g., districts with at least 1000 total sales)
-    district_sales = df_agg.groupby('District')['Sales'].sum().reset_index()
-    major_districts = district_sales[district_sales['Sales'] >= 400]['District'].tolist()
-    df_agg = df_agg[df_agg['District'].isin(major_districts)]
+    # # Filter major districts (e.g., districts with at least 1000 total sales)
+    # district_sales = df_agg.groupby('District')['Sales'].sum().reset_index()
+    # major_districts = district_sales[district_sales['Sales'] >= 400]['District'].tolist()
+    # df_agg = df_agg[df_agg['District'].isin(major_districts)]
 
-    df_pivot = df_agg.pivot(index='Sales Date', columns=['Price Range', 'District'], values='Sales').fillna(0)
+    # df_pivot = df_agg.pivot(index='Sales Date', columns=['Price Range', 'District'], values='Sales').fillna(0)
 
-    results = Parallel(n_jobs=-1)(delayed(forecast_sarima)(df_pivot[column]) for column in df_pivot.columns)
-    forecast_df = pd.DataFrame([(column[0], column[1], result) for column, result in zip(df_pivot.columns, results)],
-                               columns=['Price Range', 'District', 'Forecasted Sales'])
+    # results = Parallel(n_jobs=-1)(delayed(forecast_sarima)(df_pivot[column]) for column in df_pivot.columns)
+    # forecast_df = pd.DataFrame([(column[0], column[1], result) for column, result in zip(df_pivot.columns, results)],
+    #                            columns=['Price Range', 'District', 'Forecasted Sales'])
 
-    # Convert 'Forecasted Sales' to numeric type
-    forecast_df['Forecasted Sales'] = pd.to_numeric(forecast_df['Forecasted Sales'], errors='coerce')
+    # # Convert 'Forecasted Sales' to numeric type
+    # forecast_df['Forecasted Sales'] = pd.to_numeric(forecast_df['Forecasted Sales'], errors='coerce')
 
-    # Get top 3 price ranges for each district
-    top_price_ranges_by_district = forecast_df.groupby('District').apply(lambda x: x.nlargest(3, 'Forecasted Sales')).reset_index(drop=True)
+    # # Get top 3 price ranges for each district
+    # top_price_ranges_by_district = forecast_df.groupby('District').apply(lambda x: x.nlargest(3, 'Forecasted Sales')).reset_index(drop=True)
+    top_price_ranges_by_district= pd.read_csv("top_price_ranges_by_district.csv")
 
     chart = (
         alt.Chart(top_price_ranges_by_district, width=505, height=200).mark_bar(size=10).encode(
