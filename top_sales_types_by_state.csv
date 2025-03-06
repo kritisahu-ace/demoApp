@@ -1,0 +1,85 @@
+,Sales Type,State,Forecasted Sales
+0,Internal Finance,Andhra Pradesh,40.3857438775471
+1,Cash,Andhra Pradesh,32.762756937418295
+2,Outside Finance,Andhra Pradesh,19.420640729819233
+3,Cash,Arunachal Pradesh,49.60867664766127
+4,Outside Finance,Arunachal Pradesh,48.84513276258311
+5,Internal Finance,Arunachal Pradesh,9.47145687307943
+6,Cash,Assam,62.22256679191709
+7,Outside Finance,Assam,46.32186752153022
+8,Internal Finance,Assam,16.58372710359605
+9,Outside Finance,Bihar,58.39093296268776
+10,Internal Finance,Bihar,49.85463858895362
+11,Cash,Bihar,49.16085290640054
+12,Internal Finance,Chhattisgarh,65.07875381176738
+13,Cash,Chhattisgarh,48.63727524067462
+14,Outside Finance,Chhattisgarh,48.14309937706259
+15,Outside Finance,Goa,81.85732961667017
+16,Internal Finance,Goa,69.83079902894595
+17,Cash,Goa,37.60734890471191
+18,Internal Finance,Gujarat,75.98126557727443
+19,Cash,Gujarat,56.13711490756509
+20,Outside Finance,Gujarat,19.186950613783477
+21,Outside Finance,Haryana,57.69569122196663
+22,Internal Finance,Haryana,32.76350612386478
+23,Cash,Haryana,15.135468150934852
+24,Internal Finance,Himachal Pradesh,58.74828836490888
+25,Cash,Himachal Pradesh,56.852859828506766
+26,Outside Finance,Himachal Pradesh,51.07263159356866
+27,Cash,Jharkhand,59.58227004298517
+28,Internal Finance,Jharkhand,42.577778346414384
+29,Outside Finance,Jharkhand,31.958574742248164
+30,Cash,Karnataka,87.58650829195894
+31,Outside Finance,Karnataka,61.276333418393335
+32,Internal Finance,Karnataka,47.07946950281716
+33,Internal Finance,Kerala,38.51969633050547
+34,Cash,Kerala,30.22244535698662
+35,Outside Finance,Kerala,20.33633560889364
+36,Internal Finance,Madhya Pradesh,46.03890941827058
+37,Outside Finance,Madhya Pradesh,45.021917883500066
+38,Cash,Madhya Pradesh,35.02517791833803
+39,Outside Finance,Maharashtra,47.14557141809102
+40,Internal Finance,Maharashtra,46.269040256392884
+41,Cash,Maharashtra,44.48171099795684
+42,Cash,Manipur,59.9878738653872
+43,Internal Finance,Manipur,44.97886425661067
+44,Outside Finance,Manipur,29.159742386786917
+45,Outside Finance,Meghalaya,83.33929875670383
+46,Internal Finance,Meghalaya,44.57206392940377
+47,Cash,Meghalaya,21.912019955977172
+48,Outside Finance,Mizoram,56.80003337242708
+49,Cash,Mizoram,48.93592421515682
+50,Internal Finance,Mizoram,45.59615618902823
+51,Cash,Nagaland,63.85122636557598
+52,Internal Finance,Nagaland,60.96165797945527
+53,Outside Finance,Nagaland,25.40941870616787
+54,Cash,Odisha,81.77543869125944
+55,Outside Finance,Odisha,60.377029552436206
+56,Internal Finance,Odisha,54.164584520179105
+57,Cash,Punjab,58.70594087603288
+58,Internal Finance,Punjab,52.98077569447489
+59,Outside Finance,Punjab,32.55848868129109
+60,Outside Finance,Rajasthan,80.91036641443007
+61,Cash,Rajasthan,77.55942504361613
+62,Internal Finance,Rajasthan,40.397119822170545
+63,Cash,Sikkim,55.156466046206646
+64,Internal Finance,Sikkim,42.96265690634326
+65,Outside Finance,Sikkim,42.09001418585825
+66,Cash,Tamil Nadu,82.09973545953191
+67,Outside Finance,Tamil Nadu,61.436958420712536
+68,Internal Finance,Tamil Nadu,59.98973064249403
+69,Cash,Telangana,76.56736368273098
+70,Internal Finance,Telangana,44.96836925152642
+71,Outside Finance,Telangana,-29.514534285809116
+72,Internal Finance,Tripura,66.87572603781985
+73,Outside Finance,Tripura,51.744364872541
+74,Cash,Tripura,43.136580858909056
+75,Internal Finance,Uttar Pradesh,53.00419432507993
+76,Cash,Uttar Pradesh,47.35534390939676
+77,Outside Finance,Uttar Pradesh,24.967255216712402
+78,Internal Finance,Uttarakhand,68.93470806425421
+79,Cash,Uttarakhand,60.65346785101024
+80,Outside Finance,Uttarakhand,58.328800657231355
+81,Cash,West Bengal,87.30528523595288
+82,Outside Finance,West Bengal,43.13145124282489
+83,Internal Finance,West Bengal,40.552113881049095
