@@ -25,27 +25,27 @@ def forecast_sarima(series, order=(1, 1, 1), seasonal_order=(1, 1, 1, 12)):
         return 0  # Return 0 if model fitting fails
 
 def price_country_analysis():
-    df = load_data()
+    # df = load_data()
     
-    # Define price ranges
-    bins = [0, 200000, 500000, 1000000, float('inf')]
-    labels = ['0-2L', '2L-5L', '5L-10L', '10L+']
-    df['Price Range'] = pd.cut(df['Sales Price'], bins=bins, labels=labels)
+    # # Define price ranges
+    # bins = [0, 200000, 500000, 1000000, float('inf')]
+    # labels = ['0-2L', '2L-5L', '5L-10L', '10L+']
+    # df['Price Range'] = pd.cut(df['Sales Price'], bins=bins, labels=labels)
     
-    # Aggregate sales data by Price Range, Country, and Sales Date (quarterly)
-    df_agg = df.groupby(['Price Range', 'Country', pd.Grouper(key='Sales Date', freq='Q')]).size().reset_index(name='Sales')
-    df_pivot = df_agg.pivot(index='Sales Date', columns=['Price Range', 'Country'], values='Sales').fillna(0)
+    # # Aggregate sales data by Price Range, Country, and Sales Date (quarterly)
+    # df_agg = df.groupby(['Price Range', 'Country', pd.Grouper(key='Sales Date', freq='Q')]).size().reset_index(name='Sales')
+    # df_pivot = df_agg.pivot(index='Sales Date', columns=['Price Range', 'Country'], values='Sales').fillna(0)
 
-    results = Parallel(n_jobs=-1)(delayed(forecast_sarima)(df_pivot[column]) for column in df_pivot.columns)
-    forecast_df = pd.DataFrame([(column[0], column[1], result) for column, result in zip(df_pivot.columns, results)],
-                               columns=['Price Range', 'Country', 'Forecasted Sales'])
+    # results = Parallel(n_jobs=-1)(delayed(forecast_sarima)(df_pivot[column]) for column in df_pivot.columns)
+    # forecast_df = pd.DataFrame([(column[0], column[1], result) for column, result in zip(df_pivot.columns, results)],
+    #                            columns=['Price Range', 'Country', 'Forecasted Sales'])
 
-    # Convert 'Forecasted Sales' to numeric type
-    forecast_df['Forecasted Sales'] = pd.to_numeric(forecast_df['Forecasted Sales'], errors='coerce')
+    # # Convert 'Forecasted Sales' to numeric type
+    # forecast_df['Forecasted Sales'] = pd.to_numeric(forecast_df['Forecasted Sales'], errors='coerce')
 
-    # Get top 3 price ranges for each country
-    top_price_ranges_by_country = forecast_df.groupby('Country').apply(lambda x: x.nlargest(3, 'Forecasted Sales')).reset_index(drop=True)
-
+    # # Get top 3 price ranges for each country
+    # top_price_ranges_by_country = forecast_df.groupby('Country').apply(lambda x: x.nlargest(3, 'Forecasted Sales')).reset_index(drop=True)
+    top_price_ranges_by_country = pd.read_csv("top_price_ranges_by_country.csv")
 
     chart = (
         alt.Chart(top_price_ranges_by_country, width=505, height=200).mark_bar(size=10).encode(
