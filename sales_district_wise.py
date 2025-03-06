@@ -26,28 +26,28 @@ def forecast_sarima(series, order=(1, 1, 1), seasonal_order=(1, 1, 1, 12)):
         return 0  # Return 0 if model fitting fails
 
 def district_analysis():
-    df = load_data()
-    df_agg = df.groupby(['Model', 'District', pd.Grouper(key='Sales Date', freq='Q')]).size().reset_index(name='Sales')  
-    # Filter major districts (e.g., districts with at least 1000 total sales)
-    district_sales = df_agg.groupby('District')['Sales'].sum().reset_index()
-    major_districts = district_sales[district_sales['Sales'] >= 400]['District'].tolist()
-    df_agg = df_agg[df_agg['District'].isin(major_districts)]
-    df_pivot = df_agg.pivot(index='Sales Date', columns=['Model', 'District'], values='Sales').fillna(0)
+    # df = load_data()
+    # df_agg = df.groupby(['Model', 'District', pd.Grouper(key='Sales Date', freq='Q')]).size().reset_index(name='Sales')  
+    # # Filter major districts (e.g., districts with at least 1000 total sales)
+    # district_sales = df_agg.groupby('District')['Sales'].sum().reset_index()
+    # major_districts = district_sales[district_sales['Sales'] >= 400]['District'].tolist()
+    # df_agg = df_agg[df_agg['District'].isin(major_districts)]
+    # df_pivot = df_agg.pivot(index='Sales Date', columns=['Model', 'District'], values='Sales').fillna(0)
 
-    # Filter districts with sufficient data (e.g., at least 10 sales)
-    districts_to_keep = df_pivot.columns[df_pivot.sum() > 10]
-    df_pivot = df_pivot[districts_to_keep]    
+    # # Filter districts with sufficient data (e.g., at least 10 sales)
+    # districts_to_keep = df_pivot.columns[df_pivot.sum() > 10]
+    # df_pivot = df_pivot[districts_to_keep]    
 
-    results = Parallel(n_jobs=-1)(delayed(forecast_sarima)(df_pivot[column]) for column in df_pivot.columns)
-    forecast_df = pd.DataFrame([(column[0], column[1], result) for column, result in zip(df_pivot.columns, results)],
-                               columns=['Model', 'District', 'Forecasted Sales'])
+    # results = Parallel(n_jobs=-1)(delayed(forecast_sarima)(df_pivot[column]) for column in df_pivot.columns)
+    # forecast_df = pd.DataFrame([(column[0], column[1], result) for column, result in zip(df_pivot.columns, results)],
+    #                            columns=['Model', 'District', 'Forecasted Sales'])
 
-    # Convert 'Forecasted Sales' to numeric type
-    forecast_df['Forecasted Sales'] = pd.to_numeric(forecast_df['Forecasted Sales'], errors='coerce')
+    # # Convert 'Forecasted Sales' to numeric type
+    # forecast_df['Forecasted Sales'] = pd.to_numeric(forecast_df['Forecasted Sales'], errors='coerce')
 
-    # Get top 3 models for each district
-    top_models_by_district = forecast_df.groupby('District').apply(lambda x: x.nlargest(3, 'Forecasted Sales')).reset_index(drop=True)
-
+    # # Get top 3 models for each district
+    # top_models_by_district = forecast_df.groupby('District').apply(lambda x: x.nlargest(3, 'Forecasted Sales')).reset_index(drop=True)
+    top_models_by_district = pd.read_csv("top_models_by_district.csv")
     chart = (
         alt.Chart(top_models_by_district, width=505, height=200).mark_bar(size=10).encode(
             x='Model:N',#, title='', axis=alt.Axis(labelAngle=45, labelLimit=10), sort=top_models_by_state['Forecasted Sales']),
