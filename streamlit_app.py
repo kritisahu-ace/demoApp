@@ -97,7 +97,7 @@ with tab4:
     #st.header("Preferred Sales Type (Next Quarter)")
     
     # Sub-tabs for Preferred Price Range
-    subtab10 = st.tabs(["Country"])
+    subtab10, = st.tabs(["Country"])
     
     with subtab10:
         st.header("Frequent visting customer by Country")
