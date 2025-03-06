@@ -26,26 +26,26 @@ def forecast_sarima(series, order=(1, 1, 1), seasonal_order=(1, 1, 1, 12)):
         return 0  # Return 0 if model fitting fails
 
 def state_analysis():
-    df = load_data()
-    df_agg = df.groupby(['Model', 'State', pd.Grouper(key='Sales Date', freq='Q')]).size().reset_index(name='Sales')
-    df_pivot = df_agg.pivot(index='Sales Date', columns=['Model', 'State'], values='Sales').fillna(0)
+    # df = load_data()
+    # df_agg = df.groupby(['Model', 'State', pd.Grouper(key='Sales Date', freq='Q')]).size().reset_index(name='Sales')
+    # df_pivot = df_agg.pivot(index='Sales Date', columns=['Model', 'State'], values='Sales').fillna(0)
 
-    results = Parallel(n_jobs=-1)(delayed(forecast_sarima)(df_pivot[column]) for column in df_pivot.columns)
-    forecast_df = pd.DataFrame([(column[0], column[1], result) for column, result in zip(df_pivot.columns, results)],
-                               columns=['Model', 'State', 'Forecasted Sales'])
+    # results = Parallel(n_jobs=-1)(delayed(forecast_sarima)(df_pivot[column]) for column in df_pivot.columns)
+    # forecast_df = pd.DataFrame([(column[0], column[1], result) for column, result in zip(df_pivot.columns, results)],
+    #                            columns=['Model', 'State', 'Forecasted Sales'])
 
-    # Convert 'Forecasted Sales' to numeric type
-    forecast_df['Forecasted Sales'] = pd.to_numeric(forecast_df['Forecasted Sales'], errors='coerce')
+    # # Convert 'Forecasted Sales' to numeric type
+    # forecast_df['Forecasted Sales'] = pd.to_numeric(forecast_df['Forecasted Sales'], errors='coerce')
 
-    # Get top 3 models for each state
-    top_models_by_state = forecast_df.groupby('State').apply(lambda x: x.nlargest(3, 'Forecasted Sales')).reset_index(drop=True)
+    # # Get top 3 models for each state
+    # top_models_by_state = forecast_df.groupby('State').apply(lambda x: x.nlargest(3, 'Forecasted Sales')).reset_index(drop=True)
 
     # top_models_by_state.to_csv("123.csv")
     # Plot
-    states = top_models_by_state['State'].unique()
-    models = top_models_by_state['Model'].unique()
-    sales_data = {state: top_models_by_state[top_models_by_state['State'] == state]['Forecasted Sales'].values for state in states}
-
+    # states = top_models_by_state['State'].unique()
+    # models = top_models_by_state['Model'].unique()
+    # sales_data = {state: top_models_by_state[top_models_by_state['State'] == state]['Forecasted Sales'].values for state in states}
+    top_models_by_state = pd.read_csv("top_models_by_state.csv")
     chart = (
         alt.Chart(top_models_by_state, width=505, height=200).mark_bar(size=10).encode(
             x='Model:N',#, title='', axis=alt.Axis(labelAngle=45, labelLimit=10), sort=top_models_by_state['Forecasted Sales']),
