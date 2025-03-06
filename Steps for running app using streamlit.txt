@@ -1,0 +1,8 @@
+Install Python
+for installing any libraries under python
+	point to the folder python scripts folder "C:\Users\AL6310\AppData\Local\Programs\Python\Python313\Scripts"
+	Run command pip3 install <libname>(ex:streamlit)
+Libraries installed for this project to run - screenshot attached in drive - supportinglibs.jpg
+For running streamlit app
+	point to the folder python scripts folder "C:\Users\AL6310\AppData\Local\Programs\Python\Python313\Scripts"
+	Run command streamlit run <path of the streamlit module to run>
