@@ -8,8 +8,10 @@ import altair as alt
 
 def load_data():
     # Construct the file path dynamically
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(current_dir, "used_cars_india.csv")
+    # current_dir = os.path.dirname(os.path.abspath(__file__))
+    # file_path = os.path.join(current_dir, "used_cars_india.csv")
+    file_path = "used_cars_india.csv"
+
     
     # Load dataset
     df = pd.read_csv(file_path, sep="\t")
@@ -29,36 +31,38 @@ def forecast_sarima(series, order=(1, 0, 0)):
         return 0  # Return 0 if model fitting fails
 
 def customer_country_analysis():
-    df = load_data()
+    # df = load_data()
     
-    # Filter customers who change cars frequently (e.g., customers with at least 2 purchases)
-    customer_purchase_count = df.groupby(['Customer', 'Country']).size().reset_index(name='Purchase Count')
-    frequent_customers = customer_purchase_count[customer_purchase_count['Purchase Count'] >= 2]
+    # # Filter customers who change cars frequently (e.g., customers with at least 2 purchases)
+    # customer_purchase_count = df.groupby(['Customer', 'Country']).size().reset_index(name='Purchase Count')
+    # frequent_customers = customer_purchase_count[customer_purchase_count['Purchase Count'] >= 2]
     
-    # Filter the dataset to include only frequent customers
-    df_frequent = df.merge(frequent_customers, on=['Customer', 'Country'])
+    # # Filter the dataset to include only frequent customers
+    # df_frequent = df.merge(frequent_customers, on=['Customer', 'Country'])
     
-    # Aggregate sales data by Customer, Country, and Sales Date (quarterly)
-    df_agg = df_frequent.groupby(['Customer', 'Country', pd.Grouper(key='Sales Date', freq='Q')]).size().reset_index(name='Sales')
+    # # Aggregate sales data by Customer, Country, and Sales Date (quarterly)
+    # df_agg = df_frequent.groupby(['Customer', 'Country', pd.Grouper(key='Sales Date', freq='Q')]).size().reset_index(name='Sales')
     
-    # Pivot the data for time series analysis
-    df_pivot = df_agg.pivot(index='Sales Date', columns=['Customer', 'Country'], values='Sales').fillna(0)
+    # # Pivot the data for time series analysis
+    # df_pivot = df_agg.pivot(index='Sales Date', columns=['Customer', 'Country'], values='Sales').fillna(0)
 
-    # Parallelize SARIMA forecasting
-    results = Parallel(n_jobs=-1)(delayed(forecast_sarima)(df_pivot[column]) for column in df_pivot.columns)
-    forecast_df = pd.DataFrame([(column[0], column[1], result) for column, result in zip(df_pivot.columns, results)],
-                               columns=['Customer', 'Country', 'Forecasted Sales'])
+    # # Parallelize SARIMA forecasting
+    # results = Parallel(n_jobs=-1)(delayed(forecast_sarima)(df_pivot[column]) for column in df_pivot.columns)
+    # forecast_df = pd.DataFrame([(column[0], column[1], result) for column, result in zip(df_pivot.columns, results)],
+    #                            columns=['Customer', 'Country', 'Forecasted Sales'])
 
-    # Convert 'Forecasted Sales' to numeric type
-    forecast_df['Forecasted Sales'] = pd.to_numeric(forecast_df['Forecasted Sales'], errors='coerce')
+    # # Convert 'Forecasted Sales' to numeric type
+    # forecast_df['Forecasted Sales'] = pd.to_numeric(forecast_df['Forecasted Sales'], errors='coerce')
 
-    # Get top 3 customers for each country
-    top_customers_by_country = forecast_df.groupby('Country').apply(lambda x: x.nlargest(3, 'Forecasted Sales')).reset_index(drop=True)
+    # # Get top 3 customers for each country
+    # top_customers_by_country = forecast_df.groupby('Country').apply(lambda x: x.nlargest(3, 'Forecasted Sales')).reset_index(drop=True)
 
-    # top_models = forecast_df.nlargest(10, 'Forecasted Sales')
-    top_customers_by_country.sort_values('Forecasted Sales', inplace = True, ascending=False)
-    top_customers_by_country['Customer By Country'] = top_customers_by_country['Customer'] + " (" + top_customers_by_country['Country'] + ")"
-    # top_customers_by_country.to_csv("try.csv")
+    # # top_models = forecast_df.nlargest(10, 'Forecasted Sales')
+    # top_customers_by_country.sort_values('Forecasted Sales', inplace = True, ascending=False)
+    # top_customers_by_country['Customer By Country'] = top_customers_by_country['Customer'] + " (" + top_customers_by_country['Country'] + ")"
+
+    top_customers_by_country = pd.read_csv("top_cust_by_country.csv")
+
     chart = (
         alt.Chart(top_customers_by_country)
         .mark_bar()
